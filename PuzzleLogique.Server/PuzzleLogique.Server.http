@@ -1,0 +1,6 @@
+@PuzzleLogique.Server_HostAddress = http://localhost:5079
+
+GET {{PuzzleLogique.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
