@@ -1,0 +1,66 @@
+@page "/starbattle"
+@using PuzzleLogique.Components.Grid
+@using PuzzleLogique.Models
+@using PuzzleLogique.Services
+@inject IPuzzleService PuzzleService
+
+<PageTitle>Star Battle - Puzzles Logiques</PageTitle>
+
+<div class="container">
+    <h1 class="text-center my-4">Star Battle</h1>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Grille de Star Battle</h2>
+                </div>
+                <div class="card-body d-flex justify-content-center">
+                    <GridComponent @ref="gridComponent" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Règles du Star Battle</h3>
+                </div>
+                <div class="card-body">
+                    <p>Dans Star Battle, vous devez placer des étoiles dans une grille de sorte que chaque ligne et chaque colonne contienne exactement une étoile, et qu'aucune étoile ne soit adjacente à une autre (même en diagonale).</p>
+                    
+                    <h4>Comment jouer :</h4>
+                    <ol>
+                        <li>Cliquez sur une cellule vide pour la sélectionner.</li>
+                        <li>Utilisez le bouton "Étoile" pour placer une étoile.</li>
+                        <li>Utilisez le bouton "Effacer" pour vider une cellule.</li>
+                        <li>Cliquez sur "Vérifier" pour valider votre grille.</li>
+                        <li>Les cellules en conflit seront marquées en rouge.</li>
+                        <li>Vous pouvez ajuster la taille de la grille et générer de nouveaux puzzles.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private GridComponent? gridComponent;
+    
+    protected override void OnInitialized()
+    {
+        // Cette méthode sera appelée lorsque le composant sera initialisé
+    }
+    
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender && gridComponent != null)
+        {
+            // Configurer le composant de grille pour le Star Battle
+            // Cette partie sera exécutée après le premier rendu
+        }
+    }
+}
+

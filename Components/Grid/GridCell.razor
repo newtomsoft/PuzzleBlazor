@@ -1,0 +1,76 @@
+@using PuzzleLogique.Models
+
+<div class="cell @GetCellClass()" @onclick="OnCellClick">
+    <span class="cell-value">@Cell.Value</span>
+</div>
+
+@code {
+    [Parameter]
+    public Cell Cell { get; set; } = new Cell();
+    
+    [Parameter]
+    public EventCallback<Cell> OnClick { get; set; }
+    
+    private string GetCellClass()
+    {
+        var classes = new List<string>();
+        
+        if (Cell.IsLocked)
+            classes.Add("locked");
+            
+        if (Cell.IsSelected)
+            classes.Add("selected");
+            
+        if (Cell.HasConflict)
+            classes.Add("conflict");
+            
+        return string.Join(" ", classes);
+    }
+    
+    private async Task OnCellClick()
+    {
+        if (!Cell.IsLocked)
+        {
+            await OnClick.InvokeAsync(Cell);
+        }
+    }
+}
+
+<style>
+    .cell {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        transition: all 0.2s;
+    }
+    
+    .cell:hover {
+        background-color: #f0f0f0;
+    }
+    
+    .cell.locked {
+        background-color: #f8f8f8;
+        color: #333;
+    }
+    
+    .cell.selected {
+        background-color: #e0f0ff;
+        border-color: #007bff;
+    }
+    
+    .cell.conflict {
+        background-color: #ffe0e0;
+        border-color: #ff0000;
+    }
+    
+    .cell-value {
+        user-select: none;
+    }
+</style>
+

@@ -1,0 +1,78 @@
+@page "/"
+@using PuzzleLogique.Components.Grid
+
+<PageTitle>Puzzles Logiques</PageTitle>
+
+<div class="container">
+    <h1 class="text-center my-4">Puzzles Logiques</h1>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Grille de Puzzle</h2>
+                </div>
+                <div class="card-body d-flex justify-content-center">
+                    <GridComponent />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Sudoku</h3>
+                </div>
+                <div class="card-body">
+                    <p>Le Sudoku est un jeu de logique où vous devez remplir une grille 9x9 avec des chiffres de 1 à 9, de sorte que chaque ligne, chaque colonne et chaque région 3x3 contienne tous les chiffres de 1 à 9 sans répétition.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Star Battle</h3>
+                </div>
+                <div class="card-body">
+                    <p>Dans Star Battle, vous devez placer des étoiles dans une grille de sorte que chaque ligne et chaque colonne contienne exactement une étoile, et qu'aucune étoile ne soit adjacente à une autre (même en diagonale).</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Binairo</h3>
+                </div>
+                <div class="card-body">
+                    <p>Le Binairo est un jeu de logique où vous devez remplir une grille avec des 0 et des 1, de sorte que chaque ligne et chaque colonne contienne un nombre égal de 0 et de 1, et qu'il n'y ait pas plus de deux 0 ou 1 consécutifs.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+    
+    .card-header {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+    }
+    
+    .card-body {
+        padding: 20px;
+    }
+</style>
+

@@ -1,0 +1,29 @@
+PuzzleLogique/
+  Components
+  Components/Grid
+  Layout
+  Models
+  Pages
+  Properties
+  Services
+  screenshots
+  wwwroot
+  wwwroot/css
+  wwwroot/lib
+  wwwroot/lib/bootstrap
+  wwwroot/lib/bootstrap/dist
+  wwwroot/lib/bootstrap/dist/css
+  wwwroot/lib/bootstrap/dist/js
+  wwwroot/sample-data
+
+Fichiers principaux :
+  App.razor
+  Program.cs
+  PuzzleLogique.csproj
+  PuzzleLogique.sln
+  README.md
+  _Imports.razor
+  arborescence.txt
+  arborescence_projet.txt
+  guide_utilisation.md
+  structure_projet.txt

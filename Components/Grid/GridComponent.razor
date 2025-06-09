@@ -1,0 +1,273 @@
+@using PuzzleLogique.Models
+@using PuzzleLogique.Services
+
+<div class="grid-container">
+    <div class="grid-controls">
+        <div class="grid-size-control">
+            <label for="grid-size">Taille de la grille:</label>
+            <input id="grid-size" type="number" min="2" max="12" @bind="GridSize" @bind:event="oninput" />
+            <button class="btn btn-primary" @onclick="ResizeGrid">Redimensionner</button>
+        </div>
+        
+        <div class="puzzle-type-control">
+            <label for="puzzle-type">Type de puzzle:</label>
+            <select id="puzzle-type" @bind="SelectedPuzzleType">
+                <option value="@PuzzleType.Sudoku">Sudoku</option>
+                <option value="@PuzzleType.StarBattle">Star Battle</option>
+                <option value="@PuzzleType.Binairo">Binairo</option>
+            </select>
+            <button class="btn btn-primary" @onclick="ChangePuzzleType">Changer</button>
+        </div>
+        
+        <button class="btn btn-success" @onclick="GenerateNewPuzzle">Nouveau Puzzle</button>
+        <button class="btn btn-info" @onclick="ValidatePuzzle">Vérifier</button>
+    </div>
+    
+    <div class="grid @GetGridClass()">
+        @for (int row = 0; row < CurrentGrid.Size; row++)
+        {
+            <div class="grid-row">
+                @for (int col = 0; col < CurrentGrid.Size; col++)
+                {
+                    var cell = CurrentGrid.GetCell(row, col);
+                    if (cell != null)
+                    {
+                        <GridCell Cell="cell" OnClick="CellClicked" />
+                    }
+                }
+            </div>
+        }
+    </div>
+    
+    @if (SelectedCell != null)
+    {
+        <div class="input-controls">
+            @switch (CurrentGrid.PuzzleType)
+            {
+                case PuzzleType.Sudoku:
+                    <div class="number-pad">
+                        @for (int i = 1; i <= CurrentGrid.Size; i++)
+                        {
+                            var value = i.ToString();
+                            <button class="number-button" @onclick="() => SetCellValue(value)">@value</button>
+                        }
+                        <button class="number-button clear" @onclick="() => SetCellValue(null)">Effacer</button>
+                    </div>
+                    break;
+                    
+                case PuzzleType.StarBattle:
+                    <div class="star-controls">
+                        <button class="control-button" @onclick='() => SetCellValue("*")'>Étoile</button>
+                        <button class="control-button clear" @onclick="() => SetCellValue(null)">Effacer</button>
+                    </div>
+                    break;
+                    
+                case PuzzleType.Binairo:
+                    <div class="binary-controls">
+                        <button class="control-button" @onclick='() => SetCellValue("0")'>0</button>
+                        <button class="control-button" @onclick='() => SetCellValue("1")'>1</button>
+                        <button class="control-button clear" @onclick="() => SetCellValue(null)">Effacer</button>
+                    </div>
+                    break;
+            }
+        </div>
+    }
+    
+    @if (IsComplete)
+    {
+        <div class="completion-message">
+            <div class="alert alert-success">
+                Félicitations ! Vous avez complété le puzzle.
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Inject]
+    private IPuzzleService PuzzleService { get; set; } = default!;
+    
+    private Grid CurrentGrid { get; set; } = new Grid(9, PuzzleType.Sudoku);
+    private Cell? SelectedCell { get; set; }
+    private int GridSize { get; set; } = 9;
+    private PuzzleType SelectedPuzzleType { get; set; } = PuzzleType.Sudoku;
+    private bool IsComplete { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        // Initialiser la grille
+        CurrentGrid = PuzzleService.CreateGrid(GridSize, SelectedPuzzleType);
+        PuzzleService.GeneratePuzzle(CurrentGrid);
+    }
+    
+    private void ResizeGrid()
+    {
+        // Limiter la taille de la grille
+        if (GridSize < 2) GridSize = 2;
+        if (GridSize > 12) GridSize = 12;
+        
+        // Redimensionner la grille
+        CurrentGrid.Resize(GridSize);
+        SelectedCell = null;
+        IsComplete = false;
+        
+        // Générer un nouveau puzzle
+        PuzzleService.GeneratePuzzle(CurrentGrid);
+    }
+    
+    private void ChangePuzzleType()
+    {
+        // Créer une nouvelle grille avec le type de puzzle sélectionné
+        CurrentGrid = PuzzleService.CreateGrid(GridSize, SelectedPuzzleType);
+        SelectedCell = null;
+        IsComplete = false;
+        
+        // Générer un nouveau puzzle
+        PuzzleService.GeneratePuzzle(CurrentGrid);
+    }
+    
+    private void GenerateNewPuzzle()
+    {
+        // Générer un nouveau puzzle
+        PuzzleService.GeneratePuzzle(CurrentGrid);
+        SelectedCell = null;
+        IsComplete = false;
+    }
+    
+    private void ValidatePuzzle()
+    {
+        // Valider le puzzle
+        bool isValid = PuzzleService.ValidateGrid(CurrentGrid);
+        
+        // Vérifier si le puzzle est complet
+        IsComplete = PuzzleService.IsGridComplete(CurrentGrid);
+    }
+    
+    private void CellClicked(Cell cell)
+    {
+        // Désélectionner la cellule précédemment sélectionnée
+        if (SelectedCell != null)
+        {
+            SelectedCell.IsSelected = false;
+        }
+        
+        // Sélectionner la nouvelle cellule
+        cell.IsSelected = true;
+        SelectedCell = cell;
+    }
+    
+    private void SetCellValue(string? value)
+    {
+        if (SelectedCell != null && !SelectedCell.IsLocked)
+        {
+            SelectedCell.Value = value;
+            
+            // Valider le puzzle après chaque modification
+            PuzzleService.ValidateGrid(CurrentGrid);
+            
+            // Vérifier si le puzzle est complet
+            IsComplete = PuzzleService.IsGridComplete(CurrentGrid);
+        }
+    }
+    
+    private string GetGridClass()
+    {
+        return CurrentGrid.PuzzleType switch
+        {
+            PuzzleType.Sudoku => "sudoku",
+            PuzzleType.StarBattle => "star-battle",
+            PuzzleType.Binairo => "binairo",
+            _ => string.Empty
+        };
+    }
+}
+
+<style>
+    .grid-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        margin: 20px;
+    }
+    
+    .grid-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 10px;
+        align-items: center;
+    }
+    
+    .grid-size-control, .puzzle-type-control {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .grid {
+        display: flex;
+        flex-direction: column;
+        border: 2px solid #333;
+    }
+    
+    .grid-row {
+        display: flex;
+    }
+    
+    /* Styles spécifiques pour Sudoku */
+    .grid.sudoku {
+        background-color: #fff;
+    }
+    
+    /* Styles spécifiques pour Star Battle */
+    .grid.star-battle {
+        background-color: #f8f8ff;
+    }
+    
+    /* Styles spécifiques pour Binairo */
+    .grid.binairo {
+        background-color: #f0f8ff;
+    }
+    
+    .input-controls {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .number-pad, .star-controls, .binary-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        max-width: 300px;
+    }
+    
+    .number-button, .control-button {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #ccc;
+        background-color: #f8f8f8;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.2s;
+    }
+    
+    .number-button:hover, .control-button:hover {
+        background-color: #e0e0e0;
+    }
+    
+    .clear {
+        width: auto;
+        padding: 0 10px;
+    }
+    
+    .completion-message {
+        margin-top: 20px;
+        text-align: center;
+    }
+</style>
+
