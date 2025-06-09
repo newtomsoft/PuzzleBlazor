@@ -1,19 +1,19 @@
-@page "/binairo"
-@using PuzzleLogique.Components.Grid
-@using PuzzleLogique.Models
-@using PuzzleLogique.Services
+@page "/sudoku"
+@using PuzzleLogique.Web.Components.Grid
+@using PuzzleLogique.Web.Models
+@using PuzzleLogique.Web.Services
 @inject IPuzzleService PuzzleService
 
-<PageTitle>Binairo - Puzzles Logiques</PageTitle>
+<PageTitle>Sudoku - Puzzles Logiques</PageTitle>
 
 <div class="container">
-    <h1 class="text-center my-4">Binairo</h1>
+    <h1 class="text-center my-4">Sudoku</h1>
     
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="text-center">Grille de Binairo</h2>
+                    <h2 class="text-center">Grille de Sudoku</h2>
                 </div>
                 <div class="card-body d-flex justify-content-center">
                     <GridComponent @ref="gridComponent" />
@@ -26,15 +26,15 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h3>Règles du Binairo</h3>
+                    <h3>Règles du Sudoku</h3>
                 </div>
                 <div class="card-body">
-                    <p>Le Binairo est un jeu de logique où vous devez remplir une grille avec des 0 et des 1, de sorte que chaque ligne et chaque colonne contienne un nombre égal de 0 et de 1, et qu'il n'y ait pas plus de deux 0 ou 1 consécutifs.</p>
+                    <p>Le Sudoku est un jeu de logique où vous devez remplir une grille 9x9 avec des chiffres de 1 à 9, de sorte que chaque ligne, chaque colonne et chaque région 3x3 contienne tous les chiffres de 1 à 9 sans répétition.</p>
                     
                     <h4>Comment jouer :</h4>
                     <ol>
                         <li>Cliquez sur une cellule vide pour la sélectionner.</li>
-                        <li>Utilisez les boutons "0" et "1" pour entrer une valeur.</li>
+                        <li>Utilisez les boutons numériques pour entrer un chiffre.</li>
                         <li>Utilisez le bouton "Effacer" pour vider une cellule.</li>
                         <li>Cliquez sur "Vérifier" pour valider votre grille.</li>
                         <li>Les cellules en conflit seront marquées en rouge.</li>
@@ -58,7 +58,7 @@
     {
         if (firstRender && gridComponent != null)
         {
-            // Configurer le composant de grille pour le Binairo
+            // Configurer le composant de grille pour le Sudoku
             // Cette partie sera exécutée après le premier rendu
         }
     }

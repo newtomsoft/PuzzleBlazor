@@ -1,4 +1,4 @@
-namespace PuzzleLogique.Models;
+namespace PuzzleLogique.Web.Models;
 
 /// <summary>
 /// Représente une cellule dans la grille de puzzle

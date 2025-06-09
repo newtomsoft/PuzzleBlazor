@@ -1,6 +1,6 @@
-using PuzzleLogique.Models;
+using PuzzleLogique.Web.Models;
 
-namespace PuzzleLogique.Services;
+namespace PuzzleLogique.Web.Services;
 
 /// <summary>
 /// Interface pour les services de puzzle

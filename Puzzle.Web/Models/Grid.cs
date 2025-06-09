@@ -1,4 +1,4 @@
-namespace PuzzleLogique.Models;
+namespace PuzzleLogique.Web.Models;
 
 /// <summary>
 /// Types de puzzles disponibles
